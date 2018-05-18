@@ -10,7 +10,7 @@
 #pragma comment(lib, "gdiplus")
 using namespace std;
 
-
+//2018-5-18
 
 
 #define SB_LINEUP			0
@@ -321,7 +321,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 		
 		HBRUSH hBrush;
 		//hBrush = (HBRUSH)GetStockObject(DKGRAY_BRUSH);
-		hBrush = CreateSolidBrush(HS_DIAGCROSS, RGB(123, 45, 12));
+		hBrush = CreateSolidBrush(HS_DIAGCROSS);
 		SelectObject(hdc, hBrush);
 		//SelectObject(hdc, GetStockObject(NULL_PEN));
 		
