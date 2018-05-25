@@ -61,6 +61,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_PAINT://窗口客户区无效，重绘
+		//备注hdc=BeginPaint(hwnd, &ps) 和 EndPaint(hwnd, &ps) 一对出现 开始和结束 只能在WM_PAINT使用
+		//备注hdc=GetDC(hwnd) 和 ReleaseDC(hwnd,hdc)一对出现 开始和结束 可以在如何地方使用
+	
 		hdc = BeginPaint(hwnd, &ps);
 		GetClientRect(hwnd, &rect);
 		DrawText(hdc, TEXT("WEwefqwdwqdF"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
