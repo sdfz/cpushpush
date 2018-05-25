@@ -1,0 +1,81 @@
+#include<windows.h>
+
+LRESULT CALLBACK WndProc(HWND hwdn, UINT message, WPARAM wParam, LPARAM IParam);
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstane, PSTR szCmdLine, int iCmdShow)
+{
+	HWND hwnd;
+	MSG msg;//消息
+	WNDCLASS  ws = {0};
+	static TCHAR sxapp[] = TEXT("zhoubo");
+	ws.style = CS_HREDRAW | CS_VREDRAW;            //窗口客户区宽度和高度发生变化，重新绘制窗口
+	ws.lpfnWndProc = WndProc;
+	ws.cbClsExtra = 0;                                  // 额外内存大小
+	ws.cbWndExtra = 0;                                  // 窗口实例的额外内存大小
+	ws.hInstance = hInstance;                          //四丽华句柄
+	ws.hIcon = LoadIcon(NULL, IDI_APPLICATION);                               //窗口最小化图标
+	ws.hCursor = LoadCursor(NULL, IDC_ARROW);         //鼠标光标样式
+	ws.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);//窗口背景
+	ws.lpszMenuName = NULL;                               //窗口菜单
+	ws.lpszClassName = sxapp;                  //该窗口名称(人名)
+	//ws.hIconSm = NULL;                               //左上角图标
+
+	//1 注册窗口
+	if (!RegisterClass(&ws))
+	{
+		MessageBox(NULL,TEXT("This program requires Windows NT!"), sxapp,MB_ICONERROR);//若注册失败，则弹出消息对话框
+		return 0;
+	}
+
+
+	//2 创建窗口
+	hwnd = CreateWindow(sxapp,
+						TEXT("标题名"),
+						WS_OVERLAPPEDWINDOW | WS_VSCROLL | WS_HSCROLL,//重叠式窗口
+						CW_USEDEFAULT,CW_USEDEFAULT, // 左上角屏幕坐标默认值
+						CW_USEDEFAULT,CW_USEDEFAULT, // 窗口宽度和高度默认值
+						NULL,// 此窗口无父窗口
+						NULL,// 此窗口无主菜单
+						hInstance,// 创建此窗口的实例句柄
+						NULL);// 此窗口无创建参数
+
+	//3 显示更新窗口
+	ShowWindow(hwnd, iCmdShow);
+	UpdateWindow(hwnd);
+
+	//4 消息循环
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);//翻译键盘消息
+		DispatchMessage(&msg);//发送消息
+	}
+	return msg.wParam;
+}
+
+//窗口过程
+LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	HDC hdc;	//设备描述表句柄
+	PAINTSTRUCT ps;//绘制窗口
+	RECT rect;	//定义窗口客户区左上角和右下角的坐标
+	switch (message)
+	{
+	case WM_PAINT://窗口客户区无效，重绘
+		hdc = BeginPaint(hwnd, &ps);
+		GetClientRect(hwnd, &rect);
+		DrawText(hdc, TEXT("WEwefqwdwqdF"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+		EndPaint(hwnd, &ps);
+		return 0;
+
+	case WM_DESTROY://销毁消息
+		PostQuitMessage(0);//将结束消息加入消息队列
+		return 0;
+	default:
+		return DefWindowProc(hwnd, message, wParam, lParam);//不想处理的消息给windows
+	}
+	
+
+}
+
+
+
